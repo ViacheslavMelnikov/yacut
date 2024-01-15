@@ -14,7 +14,7 @@ def get_unique_short_id():
 
 
 @app.route('/', methods=['GET', 'POST'])
-def urlmapform():
+def urlmapform_view():
     form = URLMapForm()
     if form.validate_on_submit():
         original = form.original_link.data
