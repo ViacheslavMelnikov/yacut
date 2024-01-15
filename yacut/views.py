@@ -1,11 +1,12 @@
 from random import randrange
 
-from flask import abort, flash, redirect, render_template, url_for
+from flask import flash, redirect, render_template, url_for
 
 from . import app, db
 from .forms import URLMapForm
 from .models import URLMap
 from .constants import DICT_SYMBOLS
+from .error_handlers import InvalidAPIUsage
 
 
 def get_unique_short_id():
@@ -14,7 +15,7 @@ def get_unique_short_id():
 
 
 @app.route('/', methods=['GET', 'POST'])
-def urlmapform_view():
+def urlmap_view():
     form = URLMapForm()
     if form.validate_on_submit():
         original = form.original_link.data
@@ -24,7 +25,7 @@ def urlmapform_view():
 
         if URLMap.query.filter_by(short=short).first():
             flash('Предложенный вариант короткой ссылки уже существует.')
-            return render_template('urlmapform.html', form=form)
+            return render_template('index.html', form=form)
         urlmap = URLMap(
             original=original, 
             short=short
@@ -34,12 +35,12 @@ def urlmapform_view():
         flash('Ваша новая ссылка готова:', 'shorturl_message1')
         create_short_url = url_for('redirect_view', short=short, _external=True)
         flash(create_short_url, 'shorturl_message2')
-    return render_template('urlmapform.html', form=form)
+    return render_template('index.html', form=form)
 
 
 @app.route('/<string:short>/', methods=['GET', ])
 def redirect_view(short):
-    urlmapform = URLMap.query.filter_by(short=short).first()
-    if urlmapform is None:
-        abort(404)
-    return redirect(urlmapform.original)
+    urlmap = URLMap.query.filter_by(short=short).first()
+    if urlmap is None:
+        raise InvalidAPIUsage('Указанный id не найден', 404)
+    return redirect(urlmap.original)
