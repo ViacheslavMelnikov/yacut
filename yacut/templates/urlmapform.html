@@ -49,7 +49,9 @@
             {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
               {% for category, message in messages %}
-                {% if category == "url" %}
+                {% if category == "shorturl_message1" %}
+                  {{ message }}
+                {% elif category == "shorturl_message2" %}
                   <a href="{{ message }}">
                     {{ message }}
                   </a>

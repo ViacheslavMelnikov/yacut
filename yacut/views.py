@@ -31,8 +31,9 @@ def urlmapform_view():
         )
         db.session.add(urlmap)
         db.session.commit()
-        flash('Ваша новая ссылка готова:')
-        flash(url_for('redirect_view', short=short, _external=True), 'url')
+        flash('Ваша новая ссылка готова:', 'shorturl_message1')
+        create_short_url = url_for('redirect_view', short=short, _external=True)
+        flash(create_short_url, 'shorturl_message2')
     return render_template('urlmapform.html', form=form)
 
 
