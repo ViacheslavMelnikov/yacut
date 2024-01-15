@@ -24,7 +24,7 @@ def urlmapform_view():
 
         if URLMap.query.filter_by(short=short).first():
             flash('Предложенный вариант короткой ссылки уже существует.')
-            return render_template(url_for('urlmapform.html', form=form))
+            return render_template('urlmapform.html', form=form)
         urlmap = URLMap(
             original=original, 
             short=short
@@ -32,8 +32,8 @@ def urlmapform_view():
         db.session.add(urlmap)
         db.session.commit()
         flash('Ваша новая ссылка готова:')
-        flash(url_for('redirect_view', short_id=short, _external=True), 'url')
-    return render_template(url_for('urlmapform.html', form=form))
+        flash(url_for('redirect_view', short=short, _external=True), 'url')
+    return render_template('urlmapform.html', form=form)
 
 
 @app.route('/<string:short>/', methods=['GET', ])

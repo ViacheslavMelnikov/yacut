@@ -15,7 +15,6 @@
             {{ form.csrf_token }}
             <div>
               <div>
-                
                 {{ form.original_link(class="form-control form-control-lg py-2 mb-3", placeholder=form.original_link.label.text) }}
                 {% if form.original_link.errors %}
                   {% for error in form.original_link.errors %}
@@ -24,7 +23,6 @@
                 {% endif %}
               </div>
               <div>
-                {{ form.csrf_token }}
                 {{ form.custom_id(class="form-control form-control-lg py-2 mb-3", placeholder=form.custom_id.label.text) }}
                 {% if form.custom_id.errors %}
                   {% for error in form.custom_id.errors %}
@@ -32,7 +30,7 @@
                   {% endfor %}
                 {% endif %}
               </div>
-              <input type="submit" class="btn btn-primary" value="Создать" id="submit">
+              {{ form.submit(class="btn btn-primary") }}
             </div>
           </form>
         </div>
@@ -40,6 +38,35 @@
         </div>
       </div>
     </div>
+
+    <div class="container">
+      <div class="row ">
+        <div class="col-sm">
+        </div>
+        <div class="col-sm">
+          <p class="text-center">
+          <h5 class="text-center">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, message in messages %}
+                {% if category == "url" %}
+                  <a href="{{ message }}">
+                    {{ message }}
+                  </a>
+                {% else %}
+                  {{ message }}
+                {% endif %}
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+          </h5>
+          </p>
+        </div>
+        <div class="col-sm">
+        </div>
+      </div>
+    </div>
+
   </section>
 </main>
 {% endblock %}
