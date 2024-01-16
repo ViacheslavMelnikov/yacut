@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import SubmitField, URLField, StringField
-from wtforms.validators import DataRequired, Optional, URL, Regexp
+from wtforms import StringField, SubmitField, URLField
+from wtforms.validators import URL, DataRequired, Optional, Regexp
 
 
 class URLMapForm(FlaskForm):

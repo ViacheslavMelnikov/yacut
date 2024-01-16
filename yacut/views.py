@@ -2,12 +2,12 @@ import re
 from random import randrange
 
 from flask import flash, redirect, render_template, url_for
+
 from . import app, db
-from .forms import URLMapForm
-from .models import URLMap
 from .constants import DICT_SYMBOLS
 from .error_handlers import InvalidAPIUsage
-from http import HTTPStatus
+from .forms import URLMapForm
+from .models import URLMap
 
 
 def get_unique_short_id():
