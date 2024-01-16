@@ -12,18 +12,16 @@ def add_url():
     data = request.get_json()
     if not data:
         raise InvalidAPIUsage('Отсутствует тело запроса')
-    
+
     if 'url' not in data:
         raise InvalidAPIUsage('"url" является обязательным полем!')
-    
+
     if not data.get('custom_id'):
         data['custom_id'] = get_unique_short_id()
     else:
-        if re.match(
-            r'^[a-zA-Z0-9]+$',
-            data['custom_id']) or len(data['custom_id']) > MAX_LEN_SHORT:
+        if not re.match(r'^[a-zA-Z0-9]+$', data['custom_id']) or len(data['custom_id']) > MAX_LEN_SHORT:
             raise InvalidAPIUsage('Указано недопустимое имя для короткой ссылки')
-    
+
     if URLMap.query.filter_by(short=data['custom_id']).first() is not None:
         raise InvalidAPIUsage(
             'Предложенный вариант короткой ссылки уже существует.')
