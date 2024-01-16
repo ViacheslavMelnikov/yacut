@@ -31,5 +31,3 @@ def page_not_found(error):
 def internal_error(error):
     db.session.rollback()
     return render_template('500.html'), 500
-
-

@@ -9,6 +9,7 @@ from .constants import DICT_SYMBOLS
 from .error_handlers import InvalidAPIUsage
 from http import HTTPStatus
 
+
 def get_unique_short_id():
     len_dict = len(DICT_SYMBOLS)
     return ''.join([DICT_SYMBOLS[randrange(len_dict)] for _ in range(6)])
@@ -38,9 +39,9 @@ def urlmap_view():
     return render_template('index.html', form=form)
 
 
-@app.route('/<string:short_id>/', methods=['GET', ])
+@app.route('/<string:short_id>', methods=['GET', ])
 def redirect_view(short_id):
     urlmap = URLMap.query.filter_by(short=short_id).first()
     if urlmap is None:
         raise InvalidAPIUsage('Указанный id не найден', 404)
-    return redirect(urlmap.original, code=HTTPStatus.FOUND.value)
+    return redirect(urlmap.original, code=302)
