@@ -6,7 +6,7 @@ from . import app, db
 
 
 class InvalidAPIUsage(Exception):
-    status_code = 400
+    status_code = HTTPStatus.BAD_REQUEST
 
     def __init__(self, message, status_code=None):
         super().__init__()
@@ -15,7 +15,7 @@ class InvalidAPIUsage(Exception):
             self.status_code = status_code
 
     def to_dict(self):
-        return dict(message=self.message)
+        return {'message': self.message}
 
 
 @app.errorhandler(InvalidAPIUsage)
@@ -31,4 +31,4 @@ def page_not_found(error):
 @app.errorhandler(500)
 def internal_error(error):
     db.session.rollback()
-    return render_template('500.html'), 500
+    return render_template('500.html'), HTTPStatus.INTERNAL_SERVER_ERROR

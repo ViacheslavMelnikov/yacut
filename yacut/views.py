@@ -1,18 +1,17 @@
 import re
-from random import randrange
+from http import HTTPStatus
+from random import choice
 
 from flask import flash, redirect, render_template, url_for
 
 from . import app, db
-from .constants import DICT_SYMBOLS
-from .error_handlers import InvalidAPIUsage
+from .constants import SYMBOLS, MAX_LEN_SHORT_AUTO
 from .forms import URLMapForm
 from .models import URLMap
 
 
 def get_unique_short_id():
-    len_dict = len(DICT_SYMBOLS)
-    return ''.join([DICT_SYMBOLS[randrange(len_dict)] for _ in range(6)])
+    return ''.join(choice(SYMBOLS) for _ in range(MAX_LEN_SHORT_AUTO))
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -41,7 +40,5 @@ def urlmap_view():
 
 @app.route('/<string:short_id>', methods=['GET', ])
 def redirect_view(short_id):
-    urlmap = URLMap.query.filter_by(short=short_id).first()
-    if urlmap is None:
-        raise InvalidAPIUsage('Указанный id не найден', 404)
-    return redirect(urlmap.original, code=302)
+    urlmap = URLMap.query.filter_by(short=short_id).first_or_404()
+    return redirect(urlmap.original, code=HTTPStatus.FOUND)

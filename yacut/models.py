@@ -14,10 +14,7 @@ class URLMap(db.Model):
     def to_dict(self):
         # Добавляем в модель метод-сериализатор
         short_link = url_for('urlmap_view', _external=True) + self.short
-        return dict(
-            url=self.original,
-            short_link=short_link
-        )
+        return {'url': self.original, 'short_link': short_link}
 
     def from_dict(self, data):
         # Добавляем в модель метод-десериализатор
