@@ -43,7 +43,7 @@ python -m venv venv
 Активировать виртуальное окружение:
 
 ```
-source venv/Scripts/activate
+source venv/bin/activate
 ```
 
 Установить зависимости из файла requirements.txt:
